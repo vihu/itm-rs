@@ -22,27 +22,27 @@ fn main() {
         "../vendor/itm/src/Variability.cpp",
         "../vendor/itm/src/itm_area.cpp",
         "../vendor/itm/src/itm_p2p.cpp",
-        "src/itm-wrapper.cpp",
+        "wrapper/itm-wrapper.cpp",
     ];
 
     let mut bridge = cxx_build::bridge("src/lib.rs");
     bridge.flag("-std=c++11");
     bridge.include("../vendor/itm/include");
+    #[cfg(feature = "address_sanitizer")]
+    {
+        bridge.flag("-fno-omit-frame-pointer");
+        bridge.flag("-fsanitize=address");
+        bridge.flag("-ggdb");
+    }
     for path in &cxx_sources {
         bridge.file(path);
     }
 
-    #[cfg(feature = "address_sanitizer")]
-    {
-        bridge.flag("-fno-omit-frame-pointer");
-        bridge.flag("-ggdb");
-        bridge.flag("-fsanitize=address");
-    }
-    bridge.compile("sigserve_wrapper");
+    bridge.compile("itm_wrapper");
 
     for path in cxx_sources.iter() {
         println!("cargo:rerun-if-changed={path}");
     }
 
-    println!("cargo:rerun-if-changed=include/itm-wrapper.h");
+    println!("cargo:rerun-if-changed=wrapper/itm-wrapper.h");
 }

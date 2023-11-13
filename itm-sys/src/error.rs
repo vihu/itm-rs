@@ -49,9 +49,9 @@ pub enum ItmErrCode {
 }
 
 impl ItmErrCode {
-    pub fn result(err_code: c_int) -> Result<(), ItmErrCode> {
+    pub fn from_retcode<T>(err_code: c_int, val: T) -> Result<T, ItmErrCode> {
         let err = match err_code {
-            0 | 1 => return Ok(()),
+            0 | 1 => return Ok(val),
             1000 => ItmErrCode::TxTerminalHeight,
             1001 => ItmErrCode::RxTerminalHeight,
             1002 => ItmErrCode::InvalidRadioClimate,
