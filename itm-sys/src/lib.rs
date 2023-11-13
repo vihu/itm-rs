@@ -1,5 +1,10 @@
+mod enums;
 mod error;
-pub use error::ItmErrCode;
+
+pub use crate::{
+    error::ItmErrCode,
+    enums::*,
+};
 
 #[cxx::bridge]
 mod ffi {

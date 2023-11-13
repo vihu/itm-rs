@@ -3,49 +3,49 @@ use std::ffi::c_int;
 #[derive(Debug, thiserror::Error)]
 pub enum ItmErrCode {
     #[error("TX terminal height is out of range")]
-    TxTerminalHeight = 1000,
+    TxTerminalHeight,
     #[error("RX terminal height is out of range")]
-    RxTerminalHeight = 1001,
+    RxTerminalHeight,
     #[error("Invalid value for radio climate")]
-    InvalidRadioClimate = 1002,
+    InvalidRadioClimate,
     #[error("Time percentage is out of range")]
-    InvalidTime = 1003,
+    InvalidTime,
     #[error("Location percentage is out of range")]
-    InvalidLocation = 1004,
+    InvalidLocation,
     #[error("Situation percentage is out of range")]
-    InvalidSituation = 1005,
+    InvalidSituation,
     #[error("Confidence percentage is out of range")]
-    InvalidConfidence = 1006,
+    InvalidConfidence,
     #[error("Reliability percentage is out of range")]
-    InvalidReliability = 1007,
+    InvalidReliability,
     #[error("Refractivity is out of range")]
-    Refractivity = 1008,
+    Refractivity,
     #[error("Frequency is out of range")]
-    Frequency = 1009,
+    Frequency,
     #[error("Invalid value for polarization")]
-    Polarization = 1010,
+    Polarization,
     #[error("Epsilon is out of range")]
-    Epsilon = 1011,
+    Epsilon,
     #[error("Sigma is out of range")]
-    Sigma = 1012,
+    Sigma,
     #[error("The imaginary portion of the complex impedance is larger than the real portion")]
-    GroundImpedance = 1013,
+    GroundImpedance,
     #[error("Invalid value for mode of variability")]
-    Mdvar = 1014,
+    Mdvar,
     #[error("Internally computed effective earth radius is invalid")]
-    EffectiveEarth = 1016,
+    EffectiveEarth,
     #[error("Path distance is out of range")]
-    PathDistance = 1017,
+    PathDistance,
     #[error("Delta H (terrain irregularity parameter) is out of range")]
-    DeltaH = 1018,
+    DeltaH,
     #[error("Invalid value for TX siting criteria")]
-    TxSitingCriteria = 1019,
+    TxSitingCriteria,
     #[error("Invalid value for RX siting criteria")]
-    RxSitingCriteria = 1020,
+    RxSitingCriteria,
     #[error("Internally computed surface refractivity value is too small")]
-    SurfaceRefractivitySmall = 1021,
+    SurfaceRefractivitySmall,
     #[error("Internally computed surface refractivity value is too large")]
-    SurfaceRefractivityLarge = 1022,
+    SurfaceRefractivityLarge,
 }
 
 impl ItmErrCode {

@@ -1,7 +1,0 @@
-[package]
-edition = "2021"
-name    = "itm"
-version = "0.1.0"
-
-[dependencies]
-itm-sys = { path = "../itm-sys" }
