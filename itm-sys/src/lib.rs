@@ -1,3 +1,6 @@
+mod error;
+pub use error::ItmErrCode;
+
 #[cxx::bridge]
 mod ffi {
     unsafe extern "C++" {

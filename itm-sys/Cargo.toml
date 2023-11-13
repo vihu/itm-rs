@@ -9,6 +9,7 @@ address_sanitizer = []
 
 [dependencies]
 cxx = "1.0.110"
+thiserror = "1.0.50"
 
 [build-dependencies]
 cmake = "0.1.50"
