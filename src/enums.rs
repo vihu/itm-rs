@@ -1,12 +1,12 @@
 /// Antenna polarization.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Polarization {
     Horizontal = 0,
     Vertical = 1,
 }
 
 /// Siting criteria.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SittingCriteria {
     Random = 0,
     Careful = 1,
@@ -14,7 +14,7 @@ pub enum SittingCriteria {
 }
 
 /// Radio climate.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Climate {
     Equatorial = 1,
     ContinentalSubtropical = 2,
@@ -26,7 +26,7 @@ pub enum Climate {
 }
 
 /// Propagation mode.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Mode {
     NotSet = 0,
     LineOfSight = 1,
@@ -35,7 +35,7 @@ pub enum Mode {
 }
 
 /// Mode of variability.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ModeVariability {
     SingleMessage = 0,
     Accidental = 1,
