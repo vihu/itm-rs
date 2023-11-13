@@ -44,8 +44,8 @@ mod ffi {
 ///
 /// - `h_tx_meter`: transmiter height above ground (meters)
 /// - `h_rx_meter`: receiver height above ground (meters)
-/// - `terrain_delta_m`: distance between each elevation sample (meters)
-/// - `terrain`: elevation samples spaced `terrain_delta_m` apart from eachother (meters)
+/// - `step_size_m`: distance between each elevation sample (meters)
+/// - `terrain`: elevation samples spaced `step_size_m` apart from eachother (meters)
 /// - `climate`: see [`Climate`]
 /// - `n0`: refractivity (N-Units, where 301 = 4/3 earth radius)
 /// - `freq_hz`: frequency of signal (Hertz)
@@ -73,7 +73,7 @@ mod ffi {
 pub fn p2p<T>(
     h_tx_meter: T,
     h_rx_meter: T,
-    terrain_delta_m: T,
+    step_size_m: T,
     terrain: &[T],
     climate: Climate,
     n0: T,
@@ -94,7 +94,7 @@ where
         let mut pfl: Vec<f64> = Vec::with_capacity(terrain.len() + 2);
         pfl.extend(terrain.iter().map(|elev| f64::from(*elev)));
         pfl.push(terrain.len() as f64);
-        pfl.push(f64::from(terrain_delta_m));
+        pfl.push(f64::from(step_size_m));
         pfl.rotate_right(2);
         pfl
     };
@@ -136,13 +136,13 @@ mod tests {
             1954.0, 1962.0, 1938.0, 1928.0, 1920.0, 1920.0, 1916.0, 1925.0, 1931.0, 1931.0, 1960.0,
             1942.0, 1961.0, 1961.0, 1990.0, 1969.0,
         ];
-        let delta_d = 86.97297;
+        let step_size_m = 86.97297;
         let tx_alt = 4.0;
         let rx_alt = 30.0;
         let attenuation_db = p2p(
             tx_alt,
             rx_alt,
-            delta_d,
+            step_size_m,
             terrain,
             Climate::Desert,
             301.0,
