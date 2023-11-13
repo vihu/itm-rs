@@ -34,9 +34,9 @@ pub enum Mode {
     Troposcatter = 3,
 }
 
-/// Modes of variability.
+/// Mode of variability.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord)]
-pub enum Variability {
+pub enum ModeVariability {
     SingleMessage = 0,
     Accidental = 1,
     Mobile = 2,
