@@ -1,5 +1,16 @@
-[workspace]
-resolver = "2"
-members = [
-  "itm-sys",
-]
+[package]
+edition = "2021"
+name    = "itm-sys"
+version = "0.1.0"
+
+[features]
+default = []
+address_sanitizer = []
+
+[dependencies]
+cxx = "1.0.110"
+thiserror = "1.0.50"
+
+[build-dependencies]
+cmake = "0.1.50"
+cxx-build = "1.0.110"
