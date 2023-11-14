@@ -16,6 +16,7 @@ mod ffi {
     unsafe extern "C++" {
         include!("itm/wrapper/itm-wrapper.h");
 
+        #[allow(clippy::too_many_arguments)]
         fn p2p(
             h_tx_meter: f64,
             h_rx_meter: f64,
@@ -70,21 +71,22 @@ mod ffi {
 /// See [Radio Mobile] for source of this table.
 ///
 /// [Radio Mobile]: http://radiomobile.pe1mew.nl/?Calculations___ITM_model_propagation_settings
+#[allow(clippy::too_many_arguments)]
 pub fn p2p<T>(
-    h_tx_meter: T,
-    h_rx_meter: T,
-    step_size_m: T,
+    h_tx_meter: f64,
+    h_rx_meter: f64,
+    step_size_m: f64,
     terrain: &[T],
     climate: Climate,
-    n0: T,
-    f_hz: T,
+    n0: f64,
+    f_hz: f64,
     pol: Polarization,
-    epsilon: T,
-    sigma: T,
+    epsilon: f64,
+    sigma: f64,
     mode_variability: ModeVariability,
-    time: T,
-    location: T,
-    situation: T,
+    time: f64,
+    location: f64,
+    situation: f64,
 ) -> Result<f64, ItmErrCode>
 where
     T: Copy,
@@ -94,8 +96,9 @@ where
         let mut pfl: Vec<f64> = Vec::with_capacity(terrain.len() + 2);
         // Yes, we are pusing two additional non-elevation elemts into
         // the vector, but we only need to compensate for 1.
+        #[allow(clippy::cast_precision_loss)]
         pfl.push((terrain.len() - 1) as f64);
-        pfl.push(f64::from(step_size_m));
+        pfl.push(step_size_m);
         pfl.extend(terrain.iter().map(|elev| f64::from(*elev)));
         pfl
     };
@@ -104,19 +107,19 @@ where
         ret_code,
         attenuation_db,
     } = ffi::p2p(
-        h_tx_meter.into(),
-        h_rx_meter.into(),
+        h_tx_meter,
+        h_rx_meter,
         &pfl,
         climate as i32,
-        n0.into(),
-        f64::from(f_hz) / 1e6,
+        n0,
+        f_hz / 1e6,
         pol as i32,
-        epsilon.into(),
-        sigma.into(),
+        epsilon,
+        sigma,
         mode_variability as i32,
-        time.into(),
-        location.into(),
-        situation.into(),
+        time,
+        location,
+        situation,
     );
     ItmErrCode::from_retcode(ret_code, attenuation_db)
 }
@@ -128,19 +131,18 @@ mod tests {
     #[test]
     fn test_p2p() {
         // terrain data taken ITM's CLI example file <https://github.com/NTIA/itm/blob/master/cmd_examples/pfl.txt>
-        let terrain: &[f32] = &[
-            1692., 1692., 1693., 1693., 1693., 1693., 1693., 1693., 1694., 1694., 1694., 1694.,
-            1694., 1694., 1694., 1694., 1694., 1695., 1695., 1695., 1695., 1695., 1695., 1695.,
-            1695., 1696., 1696., 1696., 1696., 1696., 1696., 1697., 1697., 1697., 1697., 1697.,
-            1697., 1697., 1697., 1697., 1697., 1698., 1698., 1698., 1698., 1698., 1698., 1698.,
-            1698., 1698., 1698., 1699., 1699., 1699., 1699., 1699., 1699., 1700., 1700., 1700.,
-            1700., 1700., 1700., 1700., 1701., 1701., 1701., 1701., 1701., 1701., 1702., 1702.,
-            1702., 1702., 1702., 1702., 1702., 1702., 1703., 1703., 1703., 1703., 1703., 1703.,
-            1703., 1703., 1703., 1704., 1704., 1704., 1704., 1704., 1704., 1704., 1704., 1705.,
-            1705., 1705., 1705., 1705., 1705., 1705., 1705., 1705., 1705., 1706., 1706., 1706.,
-            1706., 1706., 1706., 1706., 1706., 1706., 1707., 1707., 1707., 1707., 1707., 1707.,
-            1707., 1708., 1708., 1708., 1708., 1708., 1708., 1708., 1708., 1709., 1709., 1709.,
-            1709., 1709., 1710., 1710., 1710., 1710., 1710., 1710., 1710., 1710., 1709.,
+        let terrain: &[u16] = &[
+            1692, 1692, 1693, 1693, 1693, 1693, 1693, 1693, 1694, 1694, 1694, 1694, 1694, 1694,
+            1694, 1694, 1694, 1695, 1695, 1695, 1695, 1695, 1695, 1695, 1695, 1696, 1696, 1696,
+            1696, 1696, 1696, 1697, 1697, 1697, 1697, 1697, 1697, 1697, 1697, 1697, 1697, 1698,
+            1698, 1698, 1698, 1698, 1698, 1698, 1698, 1698, 1698, 1699, 1699, 1699, 1699, 1699,
+            1699, 1700, 1700, 1700, 1700, 1700, 1700, 1700, 1701, 1701, 1701, 1701, 1701, 1701,
+            1702, 1702, 1702, 1702, 1702, 1702, 1702, 1702, 1703, 1703, 1703, 1703, 1703, 1703,
+            1703, 1703, 1703, 1704, 1704, 1704, 1704, 1704, 1704, 1704, 1704, 1705, 1705, 1705,
+            1705, 1705, 1705, 1705, 1705, 1705, 1705, 1706, 1706, 1706, 1706, 1706, 1706, 1706,
+            1706, 1706, 1707, 1707, 1707, 1707, 1707, 1707, 1707, 1708, 1708, 1708, 1708, 1708,
+            1708, 1708, 1708, 1709, 1709, 1709, 1709, 1709, 1710, 1710, 1710, 1710, 1710, 1710,
+            1710, 1710, 1709,
         ];
 
         // Input: <https://github.com/NTIA/itm/blob/master/cmd_examples/i_p2ptls.txt>
@@ -180,6 +182,6 @@ mod tests {
         // ITM Warning Flags        0x0000       [No Warnings]
         // ITM Return Code          0            [Success - No Errors]
         // Basic Transmission Loss  114.5        (dB)
-        assert_eq!(attenuation_db, 114.53607646913377);
+        assert!((attenuation_db - 114.53607633988526).abs() < f64::EPSILON);
     }
 }
