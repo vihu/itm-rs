@@ -37,12 +37,8 @@ fn main() {
     for path in &cxx_sources {
         bridge.file(path);
     }
-
     bridge.compile("itm_wrapper");
 
-    for path in cxx_sources.iter() {
-        println!("cargo:rerun-if-changed={path}");
-    }
-
+    println!("cargo:rerun-if-changed=wrapper/itm-wrapper.cpp");
     println!("cargo:rerun-if-changed=wrapper/itm-wrapper.h");
 }

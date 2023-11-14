@@ -16,6 +16,7 @@ mod ffi {
     unsafe extern "C++" {
         include!("itm/wrapper/itm-wrapper.h");
 
+        #[allow(clippy::too_many_arguments)]
         fn p2p(
             h_tx_meter: f64,
             h_rx_meter: f64,
@@ -70,6 +71,7 @@ mod ffi {
 /// See [Radio Mobile] for source of this table.
 ///
 /// [Radio Mobile]: http://radiomobile.pe1mew.nl/?Calculations___ITM_model_propagation_settings
+#[allow(clippy::too_many_arguments)]
 pub fn p2p<T>(
     h_tx_meter: T,
     h_rx_meter: T,
@@ -94,6 +96,7 @@ where
         let mut pfl: Vec<f64> = Vec::with_capacity(terrain.len() + 2);
         // Yes, we are pusing two additional non-elevation elemts into
         // the vector, but we only need to compensate for 1.
+        #[allow(clippy::cast_precision_loss)]
         pfl.push((terrain.len() - 1) as f64);
         pfl.push(f64::from(step_size_m));
         pfl.extend(terrain.iter().map(|elev| f64::from(*elev)));
@@ -180,6 +183,6 @@ mod tests {
         // ITM Warning Flags        0x0000       [No Warnings]
         // ITM Return Code          0            [Success - No Errors]
         // Basic Transmission Loss  114.5        (dB)
-        assert_eq!(attenuation_db, 114.53607646913377);
+        assert!((attenuation_db - 114.53607646913377).abs() < f64::EPSILON);
     }
 }
