@@ -125,44 +125,59 @@ mod tests {
 
     #[test]
     fn test_p2p() {
-        // The parameters are generated with the following [`geopath`](https://github.com/JayKickliter/geoprop/tree/jsk/add-hexit-bin/geopath) call:
-        //
-        // ```
-        // ./target/release/geopath --f32 --tile-dir=/path/to/3-arcsecond/srtm --start=38.868014,-104.920129,4 --dest=38.851764,-104.904427,30 csv
-        // ```
+        // terrain data taken ITM's CLI example file <https://github.com/NTIA/itm/blob/master/cmd_examples/pfl.txt>
         let terrain: &[f32] = &[
-            2090.0, 2068.0, 2067.0, 2026.0, 1995.0, 1985.0, 1990.0, 1990.0, 2005.0, 1985.0, 1989.0,
-            1954.0, 1962.0, 1938.0, 1928.0, 1920.0, 1920.0, 1916.0, 1925.0, 1931.0, 1931.0, 1960.0,
-            1942.0, 1961.0, 1961.0, 1990.0, 1969.0,
+            1692., 1692., 1693., 1693., 1693., 1693., 1693., 1693., 1694., 1694., 1694., 1694.,
+            1694., 1694., 1694., 1694., 1694., 1695., 1695., 1695., 1695., 1695., 1695., 1695.,
+            1695., 1696., 1696., 1696., 1696., 1696., 1696., 1697., 1697., 1697., 1697., 1697.,
+            1697., 1697., 1697., 1697., 1697., 1698., 1698., 1698., 1698., 1698., 1698., 1698.,
+            1698., 1698., 1698., 1699., 1699., 1699., 1699., 1699., 1699., 1700., 1700., 1700.,
+            1700., 1700., 1700., 1700., 1701., 1701., 1701., 1701., 1701., 1701., 1702., 1702.,
+            1702., 1702., 1702., 1702., 1702., 1702., 1703., 1703., 1703., 1703., 1703., 1703.,
+            1703., 1703., 1703., 1704., 1704., 1704., 1704., 1704., 1704., 1704., 1704., 1705.,
+            1705., 1705., 1705., 1705., 1705., 1705., 1705., 1705., 1705., 1706., 1706., 1706.,
+            1706., 1706., 1706., 1706., 1706., 1706., 1707., 1707., 1707., 1707., 1707., 1707.,
+            1707., 1708., 1708., 1708., 1708., 1708., 1708., 1708., 1708., 1709., 1709., 1709.,
+            1709., 1709., 1710., 1710., 1710., 1710., 1710., 1710., 1710., 1710., 1709.,
         ];
-        let step_size_m = 86.97297;
-        let tx_alt = 4.0;
-        let rx_alt = 30.0;
+
+        // Input: <https://github.com/NTIA/itm/blob/master/cmd_examples/i_p2ptls.txt>
+        let h_tx_meter = 15.;
+        let h_rx_meter = 3.;
+        let climate = Climate::ContinentalTemperate;
+        let n0 = 301.;
+        let f_hz = 3.5e9;
+        let pol = Polarization::Vertical;
+        let epsilon = 15.;
+        let sigma = 0.005;
+        let mdvar = ModeVariability::Accidental;
+        let time = 50.0;
+        let location = 50.0;
+        let situation = 50.0;
+        let step_size_m = 25.6;
         let attenuation_db = p2p(
-            tx_alt,
-            rx_alt,
+            h_tx_meter,
+            h_rx_meter,
             step_size_m,
             terrain,
-            Climate::Desert,
-            301.0,
-            900e6,
-            Polarization::Vertical,
-            15.0,
-            0.001,
-            ModeVariability::SingleMessage,
-            99.0,
-            99.0,
-            99.0,
+            climate,
+            n0,
+            f_hz,
+            pol,
+            epsilon,
+            sigma,
+            mdvar,
+            time,
+            location,
+            situation,
         )
         .unwrap();
 
-        println!("attenuation: {attenuation_db} dB");
-
-        // The code is currently returning this ridiculous value.
-        assert_ne!(attenuation_db, 273.6794585392174);
-
-        // FSPL over 2261.297 meters
-        let expected_free_space_path_loss = 98.61;
-        assert!(attenuation_db < expected_free_space_path_loss + 20.0);
+        // Output: <https://github.com/NTIA/itm/blob/master/cmd_examples/o_p2ptls.txt>
+        // Results
+        // ITM Warning Flags        0x0000       [No Warnings]
+        // ITM Return Code          0            [Success - No Errors]
+        // Basic Transmission Loss  114.5        (dB)
+        assert_eq!(attenuation_db, 114.53607646913377);
     }
 }
