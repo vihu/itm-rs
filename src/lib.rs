@@ -92,10 +92,9 @@ where
 {
     let pfl = {
         let mut pfl: Vec<f64> = Vec::with_capacity(terrain.len() + 2);
-        pfl.extend(terrain.iter().map(|elev| f64::from(*elev)));
         pfl.push(terrain.len() as f64);
         pfl.push(f64::from(step_size_m));
-        pfl.rotate_right(2);
+        pfl.extend(terrain.iter().map(|elev| f64::from(*elev)));
         pfl
     };
 
