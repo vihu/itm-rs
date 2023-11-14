@@ -57,7 +57,16 @@ fn main() -> Result<(), AnyErr> {
         situation,
     )?;
 
+    let total_distance_m = profile.distances_m.last().unwrap();
+    let fspl = fspl(*total_distance_m, frequency);
+
+    println!("distance:    {total_distance_m} m");
+    println!("fspl:        {fspl} dB");
     println!("attenuation: {attenuation_db} dB");
 
     Ok(())
+}
+
+fn fspl(meters: f32, freq: f32) -> f32 {
+    20.0 * meters.log10() + 20.0 * freq.log10() - 147.55
 }
