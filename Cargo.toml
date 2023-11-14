@@ -13,3 +13,12 @@ thiserror = "1"
 
 [build-dependencies]
 cxx-build = "1"
+
+[dev-dependencies]
+anyhow  = "1"
+clap    = { version = "4.4.2", features = ["derive"] }
+geo     = "0.26.0"
+terrain = { git = "https://github.com/JayKickliter/geoprop.git", branch = "main" }
+
+[[example]]
+name = "p2p"
