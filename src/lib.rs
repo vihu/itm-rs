@@ -14,7 +14,7 @@ mod ffi {
     }
 
     unsafe extern "C++" {
-        include!("itm-sys/wrapper/itm-wrapper.h");
+        include!("itm/wrapper/itm-wrapper.h");
 
         fn p2p(
             h_tx_meter: f64,
