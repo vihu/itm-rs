@@ -92,7 +92,9 @@ where
 {
     let pfl = {
         let mut pfl: Vec<f64> = Vec::with_capacity(terrain.len() + 2);
-        pfl.push(terrain.len() as f64);
+        // Yes, we are pusing two additional non-elevation elemts into
+        // the vector, but we only need to compensate for 1.
+        pfl.push((terrain.len() - 1) as f64);
         pfl.push(f64::from(step_size_m));
         pfl.extend(terrain.iter().map(|elev| f64::from(*elev)));
         pfl
