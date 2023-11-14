@@ -20,7 +20,7 @@ fn main() -> Result<(), AnyErr> {
     } = Cli::parse();
 
     let tiles = Tiles::new(tile_dir, TileMode::MemMap)?;
-    let profile = Profile::builder()
+    let profile = Profile::<f32>::builder()
         .start(start_coord)
         .start_alt(start_alt)
         .max_step(max_step)
@@ -41,13 +41,13 @@ fn main() -> Result<(), AnyErr> {
     let step_size_m = profile.distances_m[1];
     let terrain = profile.terrain_elev_m;
     let attenuation_db = itm::p2p(
-        start_alt,
-        end_alt,
-        step_size_m,
+        start_alt.into(),
+        end_alt.into(),
+        step_size_m.into(),
         &terrain,
         climate,
         n0,
-        f_hz,
+        f_hz.into(),
         pol,
         epsilon,
         sigma,
@@ -58,5 +58,6 @@ fn main() -> Result<(), AnyErr> {
     )?;
 
     println!("attenuation: {attenuation_db} dB");
+
     Ok(())
 }

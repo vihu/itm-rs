@@ -13,7 +13,7 @@ pub struct Cli {
 
     /// Maximum path incremental step size, in meters.
     #[arg(short, long, default_value_t = 90.0)]
-    pub max_step: f64,
+    pub max_step: f32,
 
     /// Start "lat,lon,alt", where 'alt' is meters above ground.
     #[arg(long)]
@@ -25,11 +25,11 @@ pub struct Cli {
 
     /// Signal frequency (Hz).
     #[arg(long, short)]
-    pub frequency: f64,
+    pub frequency: f32,
 }
 
 #[derive(Clone, Debug, Copy)]
-pub struct LatLonAlt(pub Coord<f64>, pub f64);
+pub struct LatLonAlt(pub Coord<f32>, pub f32);
 
 impl FromStr for LatLonAlt {
     type Err = AnyError;
@@ -45,9 +45,9 @@ impl FromStr for LatLonAlt {
             let (lon_str, alt_str) = lon_alt_str[1..].split_at(idx);
             (lat_str, lon_str, &alt_str[1..])
         };
-        let lat = f64::from_str(lat_str)?;
-        let lon = f64::from_str(lon_str)?;
-        let alt = f64::from_str(alt_str)?;
+        let lat = f32::from_str(lat_str)?;
+        let lon = f32::from_str(lon_str)?;
+        let alt = f32::from_str(alt_str)?;
         Ok(Self(Coord { y: lat, x: lon }, alt))
     }
 }
