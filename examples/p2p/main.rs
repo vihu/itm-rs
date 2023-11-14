@@ -20,6 +20,7 @@ fn main() -> Result<(), AnyErr> {
     } = Cli::parse();
 
     let tiles = Tiles::new(tile_dir, TileMode::MemMap)?;
+    let t0 = std::time::Instant::now();
     let profile = Profile::<f32>::builder()
         .start(start_coord)
         .start_alt(start_alt)
@@ -27,6 +28,7 @@ fn main() -> Result<(), AnyErr> {
         .end(end_coord)
         .end_alt(end_alt)
         .build(&tiles)?;
+    let profile_runtime = t0.elapsed();
 
     let climate = Climate::Desert;
     let n0 = 301.;
@@ -40,6 +42,7 @@ fn main() -> Result<(), AnyErr> {
     let situation = 50.0;
     let step_size_m = profile.distances_m[1];
     let terrain = profile.terrain_elev_m;
+    let t0 = std::time::Instant::now();
     let attenuation_db = itm::p2p(
         start_alt.into(),
         end_alt.into(),
@@ -56,13 +59,16 @@ fn main() -> Result<(), AnyErr> {
         location,
         situation,
     )?;
+    let itm_p2p_runtime = t0.elapsed();
 
     let total_distance_m = profile.distances_m.last().unwrap();
     let fspl = fspl(*total_distance_m, frequency);
 
-    println!("distance:    {total_distance_m} m");
-    println!("fspl:        {fspl} dB");
-    println!("attenuation: {attenuation_db} dB");
+    println!("profile runtime: {profile_runtime:?}");
+    println!("itm runtime:     {itm_p2p_runtime:?}");
+    println!("distance:        {total_distance_m} m");
+    println!("fspl:            {fspl} dB");
+    println!("attenuation:     {attenuation_db} dB");
 
     Ok(())
 }
