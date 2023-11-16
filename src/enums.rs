@@ -1,5 +1,6 @@
 /// Antenna polarization.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "snake_case"))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Polarization {
     Horizontal = 0,
@@ -8,6 +9,7 @@ pub enum Polarization {
 
 /// Siting criteria.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "snake_case"))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SittingCriteria {
     Random = 0,
@@ -17,6 +19,7 @@ pub enum SittingCriteria {
 
 /// Radio climate.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "snake_case"))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Climate {
     Equatorial = 1,
@@ -30,6 +33,7 @@ pub enum Climate {
 
 /// Propagation mode.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "snake_case"))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Mode {
     NotSet = 0,
@@ -40,6 +44,7 @@ pub enum Mode {
 
 /// Mode of variability.
 #[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
+#[cfg_attr(feature = "serde", serde(rename_all = "snake_case"))]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ModeVariability {
     SingleMessage = 0,
