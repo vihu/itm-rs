@@ -1,7 +1,7 @@
 #include "itm-wrapper.h"
 #include "Enums.h"
-#include "itm/src/lib.rs.h"
 #include "itm.h"
+#include "itm/src/lib.rs.h"
 
 /*=============================================================================
  |
